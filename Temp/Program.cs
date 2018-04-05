@@ -14,6 +14,7 @@ namespace Temp
         static List<String> nonIsomorphs = new List<string>();
 
         static string filePath = "";
+        static string newFileContents = "";
 
         static void Main(string[] args)
         {
@@ -26,9 +27,10 @@ namespace Temp
             List<string> words = ParseFile(filePath);
             FindIsomorphs(words);
             FindNonIsomorphs();
-            PrintIsomorphs(exactIsomorphIds, "\nExact Isomorphs:");
+            PrintIsomorphs(exactIsomorphIds, "Exact Isomorphs:");
             PrintIsomorphs(looseIsomorphIds, "\nLoose Isomorphs:");
             PrintNonIsomorphs();
+            SaveFile();
         }
 
         static string PromptUser(string question)
@@ -68,13 +70,29 @@ namespace Temp
                     break;
                 }
             }
+            
+            if (startSplit > 0)
+            {
+                path = filePath.Substring(0, startSplit);
+                path = $"{path}\\Output.txt";
+            }
+            else
+            {
+                path = "Output.txt";
+            }
 
-            path = filePath.Substring(0, startSplit);
-            Console.WriteLine(path);
+            //Console.WriteLine(path);
 
             StreamWriter writer = File.CreateText(path);
-
-            //TODO: save file
+            
+            foreach (char c in newFileContents)
+            {
+                writer.Write(c);
+                if (c == '\n')
+                {
+                    writer.WriteLine();
+                }
+            }
 
             writer.Close();
         }
@@ -115,13 +133,11 @@ namespace Temp
                 }
                 else
                 {
-                    Console.WriteLine("first");
                     foreach (var item in currentList)
                     {
                         if (nonIsomorphs.Contains(item))
                         {
                             nonIsomorphs.Remove(item);
-                            Console.WriteLine("second");
                         }
                     }
                 }
@@ -131,13 +147,16 @@ namespace Temp
         static void PrintNonIsomorphs()
         {
             Console.WriteLine("\nNon-Isomorphs:");
+            newFileContents = $"{newFileContents}\nNon-Isomorphs:\n";
 
             foreach (string s in nonIsomorphs)
             {
                 Console.Write(s + ", ");
+                newFileContents = $"{newFileContents}{s}, ";
             }
 
             Console.WriteLine("\n");
+            newFileContents = $"{newFileContents}\n";
         }
 
         static void CreateNewKey(Dictionary<string, List<string>> list, string key, string value)
@@ -152,16 +171,20 @@ namespace Temp
         static void PrintIsomorphs(Dictionary<string, List<string>> list, string title)
         {
             Console.WriteLine(title);
+            newFileContents = $"{newFileContents}{title}\n";
 
             Dictionary<string, List<string>>.KeyCollection keys = list.Keys;
             foreach (string key in keys)
             {
-                Console.Write(key + " -->");
+                Console.Write(key + "-->");
+                newFileContents = $"{newFileContents}{key}-->";
                 foreach (string word in list[key])
                 {
                     Console.Write(" " + word + ",");
+                    newFileContents = $"{newFileContents} {word},";
                 }
                 Console.WriteLine();
+                newFileContents = $"{newFileContents}\n";
             }
         }
 
@@ -217,24 +240,6 @@ namespace Temp
             {
                 output += item.Value + " ";
             }
-        }
-
-        static bool IsNonIsomorph(Dictionary<string, List<string>>.KeyCollection key)
-        {
-            bool isNonIsomorph = true;
-
-            var keys = exactIsomorphIds.Keys;
-            for (int i = keys.Count - 1; i >= 0; i--)
-            {
-                var currentList = exactIsomorphIds[keys.ElementAt(i)];
-
-                if (currentList.Count() <= 1)
-                {
-
-                }
-            }
-
-            return isNonIsomorph;
         }
     }
 }
