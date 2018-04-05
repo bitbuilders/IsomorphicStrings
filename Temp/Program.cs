@@ -175,11 +175,11 @@ namespace Temp
             {
                 if (letterValues.ContainsKey(c))
                 {
-                    isomorph += letterValues[c];
+                    isomorph += letterValues[c] + " ";
                 }
                 else
                 {
-                    isomorph += id;
+                    isomorph += id + " ";
                     letterValues.Add(c, id);
                     ++id;
                 }
@@ -215,7 +215,7 @@ namespace Temp
             var newList = list.OrderBy(i => i.Value);
             foreach (var item in newList)
             {
-                output += item.Value;
+                output += item.Value + " ";
             }
         }
 
