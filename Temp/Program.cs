@@ -113,6 +113,18 @@ namespace Temp
 
                     list.Remove(keys.ElementAt(i));
                 }
+                else
+                {
+                    Console.WriteLine("first");
+                    foreach (var item in currentList)
+                    {
+                        if (nonIsomorphs.Contains(item))
+                        {
+                            nonIsomorphs.Remove(item);
+                            Console.WriteLine("second");
+                        }
+                    }
+                }
             }
         }
 
@@ -205,6 +217,24 @@ namespace Temp
             {
                 output += item.Value;
             }
+        }
+
+        static bool IsNonIsomorph(Dictionary<string, List<string>>.KeyCollection key)
+        {
+            bool isNonIsomorph = true;
+
+            var keys = exactIsomorphIds.Keys;
+            for (int i = keys.Count - 1; i >= 0; i--)
+            {
+                var currentList = exactIsomorphIds[keys.ElementAt(i)];
+
+                if (currentList.Count() <= 1)
+                {
+
+                }
+            }
+
+            return isNonIsomorph;
         }
     }
 }
